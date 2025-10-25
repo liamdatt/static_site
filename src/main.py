@@ -2,17 +2,22 @@ from textnode import TextNode, TextType
 import os
 import shutil
 from generate_page import *
+import sys
 
 def main():
+    if len(sys.argv) > 1:
+        basepath =sys.argv[1]
+    else:
+        basepath = "/"
     if os.path.exists("static") == False:
         raise Exception("static folder not found in root directory")
-    if os.path.exists("public") == True:
-        shutil.rmtree("public")
-        os.mkdir("public") 
+    if os.path.exists("docs") == True:
+        shutil.rmtree("docs")
+        os.mkdir("docs") 
     else:
-        os.mkdir("public")
-    move_all("static","public")
-    generate_pages_recursive("content", "template.html", "public")
+        os.mkdir("docs")
+    move_all("static","docs")
+    generate_pages_recursive("content", "template.html", "docs", basepath)
 
 def move_item(item_path,destination_path):
     shutil.copy(item_path,destination_path)
